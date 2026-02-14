@@ -13,6 +13,61 @@ body {
     color: white;
 }
 
+/* ================= LOGIN SCREEN ================= */
+
+#loginPage{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background: linear-gradient(135deg,#ff416c,#ff4b2b,#1f1c2c);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.login-box{
+    background:white;
+    width:350px;
+    padding:40px;
+    border-radius:12px;
+    box-shadow:0 15px 35px rgba(0,0,0,0.3);
+    text-align:center;
+    color:black;
+}
+
+.login-box h2{
+    margin-bottom:30px;
+}
+
+.login-box input{
+    width:100%;
+    padding:12px;
+    margin-bottom:20px;
+    border-radius:6px;
+    border:1px solid #ccc;
+}
+
+.login-btn{
+    width:100%;
+    padding:12px;
+    background:#ff416c;
+    color:white;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.login-btn:hover{
+    background:#ff4b2b;
+}
+
+/* ================= TERMINAL ================= */
+
+#terminal{
+    display:none;
+}
+
 nav {
     background: #111827;
     padding: 15px;
@@ -45,184 +100,104 @@ footer {
 
 <body>
 
+<!-- ================= LOGIN PAGE ================= -->
+
+<div id="loginPage">
+  <div class="login-box">
+    <h2>🔥 Phoenix AI Login</h2>
+    <input type="text" id="username" placeholder="Admin Username">
+    <input type="password" id="password" placeholder="Password">
+    <button class="login-btn" onclick="login()">LOGIN</button>
+  </div>
+</div>
+
+<!-- ================= TERMINAL ================= -->
+
+<div id="terminal">
+
 <nav>
 🔥 Phoenix AI Live Trading Terminal 📊
 </nav>
 
-<!-- LIVE TICKER -->
 <div class="section">
 <div class="tradingview-widget-container">
-  <div class="tradingview-widget-container__widget"></div>
-  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js">
-  {
-    "symbols": [
-      {"proName": "NSE:NIFTY1!", "title": "NIFTY"},
-      {"proName": "NSE:BANKNIFTY1!", "title": "BANK NIFTY"},
-      {"proName": "NSE:FINNIFTY1!", "title": "FINNIFTY"},
-      {"proName": "NSE:MIDCPNIFTY", "title": "MIDCAP"},
-      {"proName": "BSE:SENSEX", "title": "SENSEX"},
-      {"proName": "NSE:INDIAVIX", "title": "INDIA VIX"}
-    ],
-    "showSymbolLogo": true,
-    "colorTheme": "dark",
-    "isTransparent": false,
-    "displayMode": "adaptive"
-  }
-  </script>
+<div class="tradingview-widget-container__widget"></div>
+<script src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js">
+{
+"symbols":[
+{"proName":"NSE:NIFTY1!","title":"NIFTY"},
+{"proName":"NSE:BANKNIFTY1!","title":"BANK NIFTY"},
+{"proName":"NSE:FINNIFTY1!","title":"FINNIFTY"},
+{"proName":"NSE:MIDCPNIFTY","title":"MIDCAP"},
+{"proName":"BSE:SENSEX","title":"SENSEX"},
+{"proName":"NSE:INDIAVIX","title":"INDIA VIX"}
+],
+"showSymbolLogo":true,
+"colorTheme":"dark",
+"isTransparent":false,
+"displayMode":"adaptive"
+}
+</script>
 </div>
 </div>
 
-<!-- MAIN LIVE CHART -->
 <div class="chart-box">
-<div class="tradingview-widget-container">
-  <div id="tradingview_chart"></div>
-  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-  <script>
-  new TradingView.widget({
-    "width": "100%",
-    "height": 500,
-    "symbol": "NSE:NIFTY1!",
-    "interval": "5",
-    "timezone": "Asia/Kolkata",
-    "theme": "dark",
-    "style": "1",
-    "locale": "en",
-    "toolbar_bg": "#0b0f19",
-    "enable_publishing": false,
-    "hide_top_toolbar": false,
-    "container_id": "tradingview_chart"
-  });
-  </script>
-</div>
+<div id="tradingview_chart"></div>
+<script src="https://s3.tradingview.com/tv.js"></script>
+<script>
+function loadChart(){
+new TradingView.widget({
+"width":"100%",
+"height":500,
+"symbol":"NSE:NIFTY1!",
+"interval":"5",
+"timezone":"Asia/Kolkata",
+"theme":"dark",
+"style":"1",
+"locale":"en",
+"toolbar_bg":"#0b0f19",
+"enable_publishing":false,
+"container_id":"tradingview_chart"
+});
+}
+</script>
 </div>
 
 <footer>
 © 2026 Phoenix AI Trading | Pro Terminal Version
 </footer>
 
-<!-- ====================================== -->
-<!-- ADMIN MENU + PHOENIX AI MODAL + FII/DII -->
-<!-- ====================================== -->
-
-<!-- Admin 3 Dots Button (Left Top) -->
-<div id="adminMenu" style="position: fixed; top: 20px; left: 20px; z-index: 1000; display:none;">
-  <button id="menuBtn" style="font-size:24px; background:none; border:none; color:#00ffcc; cursor:pointer;">
-    ⋮
-  </button>
 </div>
 
-<!-- Phoenix AI Modal -->
-<div id="phoenixModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); color:white; z-index:9999; overflow:auto;">
-  <div style="max-width:800px; margin:50px auto; background:#111827; padding:20px; border-radius:10px; position:relative;">
-    <span id="closeModal" style="position:absolute; top:10px; right:20px; font-size:28px; cursor:pointer;">&times;</span>
-    <h2 style="color:#1a73e8;">Phoenix AI Night Trading Plan</h2>
-
-    <h3>1️⃣ Market Timing</h3>
-    <p>8:30 PM – 11:30 PM (after US/European markets close)</p>
-
-    <h3>2️⃣ Asset Selection</h3>
-    <ul>
-      <li>Stocks: SBIN, RELIANCE, TCS, INFY, HDFC</li>
-      <li>Indices: NIFTY, BANKNIFTY</li>
-    </ul>
-
-    <h3>3️⃣ Strategy</h3>
-    <p>
-      - Option selling + intraday swing trading<br>
-      - Sell OTM Calls near resistance, Sell OTM Puts near support<br>
-      - Stock trades: Buy near support, Sell near resistance
-    </p>
-
-    <h3>4️⃣ Entry & Exit Rules</h3>
-    <ul>
-      <li>EMA 20 > EMA 50 → Buy</li>
-      <li>EMA 20 < EMA 50 → Sell</li>
-      <li>Target: 1–2% per stock trade</li>
-      <li>Options: close at 50–60% premium decay</li>
-    </ul>
-
-    <h3>5️⃣ Risk Management</h3>
-    <p>Max 2–3 trades per night, capital exposure ≤ 5%, maintain trade log</p>
-
-    <!-- FII & DII Section -->
-    <div style="margin-top:30px; padding:15px; background:#151a26; border-radius:8px; color:#00eaff;">
-      <h3 style="text-align:center; color:#4fc3f7;">📊 Institutional Flows: FII & DII (Latest)</h3>
-      <div id="fiiDiiData" style="font-size:16px; text-align:center; padding:10px;">
-        Loading data...
-      </div>
-    </div>
-
-  </div>
-</div>
+<!-- ================= SCRIPT ================= -->
 
 <script>
-// =======================
-// ADMIN LOGIN APPROVAL
-// =======================
+
+// 🔐 CHANGE THESE
 const adminUsername = "phoenixadmin";
-const adminPassword = "Aman@2002"; // Change to strong password
+const adminPassword = "Aman@2002";
 
-function adminLogin() {
-  const username = prompt("Enter Admin Username:");
-  const password = prompt("Enter Admin Password:");
+function login(){
+    const user = document.getElementById("username").value;
+    const pass = document.getElementById("password").value;
 
-  if(username === adminUsername && password === adminPassword){
-    alert("Admin verified! 3 dots menu enabled.");
-    document.getElementById("adminMenu").style.display = "block";
-  } else {
-    alert("Access Denied! You are not allowed.");
-  }
+    if(user === adminUsername && pass === adminPassword){
+        sessionStorage.setItem("phoenixLogin","true");
+        document.getElementById("loginPage").style.display="none";
+        document.getElementById("terminal").style.display="block";
+        loadChart();
+    } else {
+        alert("Access Denied!");
+    }
 }
 
-// Call adminLogin on page load
-window.onload = adminLogin;
-
-// =======================
-// 3 DOTS MENU -> PHOENIX AI MODAL
-// =======================
-const menuBtn = document.getElementById("menuBtn");
-const modal = document.getElementById("phoenixModal");
-const closeModal = document.getElementById("closeModal");
-
-menuBtn.onclick = () => {
-  modal.style.display = "block";
+// Auto login if already logged
+if(sessionStorage.getItem("phoenixLogin") === "true"){
+    document.getElementById("loginPage").style.display="none";
+    document.getElementById("terminal").style.display="block";
+    loadChart();
 }
 
-closeModal.onclick = () => {
-  modal.style.display = "none";
-}
-
-// Close modal on outside click
-window.onclick = function(event) {
-  if(event.target == modal){
-    modal.style.display = "none";
-  }
-}
-
-// =======================
-// FII & DII DATA (Static Demo)
-// =======================
-const sampleFiiDii = {
-  date: "12‑02‑2026",
-  fiiNet: "₹108.42 Cr",
-  diiNet: "₹276.85 Cr"
-};
-
-function updateFiiDii() {
-  const el = document.getElementById("fiiDiiData");
-  el.innerHTML = `
-    <strong>Date:</strong> ${sampleFiiDii.date}<br>
-    <strong>FII Net Flow:</strong> ${sampleFiiDii.fiiNet}<br>
-    <strong>DII Net Flow:</strong> ${sampleFiiDii.diiNet}<br>
-    <small style="opacity:0.7;">Source: Upstox FII/DII Data (updated daily)</small>
-  `;
-}
-
-// Call update on load
-updateFiiDii();
-
-// Optional: auto refresh every 10 mins
-// setInterval(updateFiiDii, 600000);
 </script>
 
 </body>
