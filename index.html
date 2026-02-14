@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Phoenix AI Trading Pro</title>
+<title>Phoenix AI Trading Terminal</title>
 
 <style>
 body {
@@ -13,92 +13,32 @@ body {
     color: white;
 }
 
-/* NAVBAR */
+/* NAV */
 nav {
     background: #111827;
     padding: 15px;
     text-align: center;
-}
-
-nav a {
-    color: white;
-    text-decoration: none;
-    margin: 0 20px;
+    font-size: 22px;
+    color: #00ffcc;
     font-weight: bold;
 }
 
-nav a:hover {
-    color: #00ffcc;
-}
-
-/* HERO */
-.hero {
-    text-align: center;
-    padding: 60px 20px;
-    background: linear-gradient(to right, #0f172a, #1e293b);
-}
-
-.hero span {
-    color: #00ffcc;
-}
-
-/* DASHBOARD STATS */
-.dashboard {
-    display: flex;
-    justify-content: space-around;
-    padding: 30px;
-    flex-wrap: wrap;
-}
-
-.stat {
-    background: #111827;
-    padding: 20px;
-    margin: 10px;
-    border-radius: 10px;
-    width: 200px;
-    text-align: center;
-}
-
-.green { color: #00ff88; }
-.red { color: #ff4d4d; }
-
-/* CHART */
-.chart-container {
-    text-align: center;
-    padding: 40px;
-}
-
-canvas {
-    background: #111827;
-    border-radius: 10px;
-}
-
-/* SIGNAL CARDS */
+/* SECTION */
 .section {
-    padding: 40px 20px;
+    padding: 30px;
     text-align: center;
 }
 
-.card {
+/* CHART BOX */
+.chart-box {
+    margin: 30px auto;
+    width: 95%;
     background: #111827;
     padding: 20px;
-    margin: 20px auto;
-    width: 80%;
     border-radius: 10px;
 }
 
-button {
-    padding: 10px 20px;
-    background: #00ffcc;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-button:hover {
-    background: #00bfa6;
-}
-
+/* FOOTER */
 footer {
     text-align: center;
     padding: 20px;
@@ -110,82 +50,4 @@ footer {
 
 <body>
 
-<nav>
-    <a href="#">Dashboard</a>
-    <a href="#signals">Signals</a>
-    <a href="#plans">Plans</a>
-</nav>
-
-<div class="hero">
-    <h1>Phoenix AI <span>Trading Dashboard 🔥</span></h1>
-    <p>Live Market Insights | Smart Signals</p>
-</div>
-
-<!-- Dashboard Stats -->
-<div class="dashboard">
-    <div class="stat">
-        <h3>Total Trades</h3>
-        <p>152</p>
-    </div>
-    <div class="stat">
-        <h3>Win Rate</h3>
-        <p class="green">78%</p>
-    </div>
-    <div class="stat">
-        <h3>Today's P/L</h3>
-        <p class="green">+₹4,250</p>
-    </div>
-</div>
-
-<!-- Animated Chart -->
-<div class="chart-container">
-    <h2>Live Chart Simulation</h2>
-    <canvas id="chart" width="600" height="300"></canvas>
-</div>
-
-<!-- Signals -->
-<div class="section" id="signals">
-    <h2>Active Signal</h2>
-    <div class="card">
-        <h3>BANK NIFTY CALL</h3>
-        <p>Entry: 45000</p>
-        <p>Target: 45200</p>
-        <p>Stop Loss: 44850</p>
-        <button>Join Premium</button>
-    </div>
-</div>
-
-<footer>
-    © 2026 Phoenix AI Trading | Admin Panel Version
-</footer>
-
-<script>
-const canvas = document.getElementById("chart");
-const ctx = canvas.getContext("2d");
-
-let points = [];
-for (let i = 0; i < 50; i++) {
-    points.push(Math.random() * 200 + 50);
-}
-
-function drawChart() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.beginPath();
-    ctx.moveTo(0, points[0]);
-
-    for (let i = 1; i < points.length; i++) {
-        ctx.lineTo(i * 12, points[i]);
-    }
-
-    ctx.strokeStyle = "#00ffcc";
-    ctx.stroke();
-
-    points.shift();
-    points.push(Math.random() * 200 + 50);
-}
-
-setInterval(drawChart, 1000);
-</script>
-
-</body>
-</html>
+<na
