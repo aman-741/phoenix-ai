@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Phoenix AI Terminal</title>
+
+<title>Phoenix AI Pro</title>
 
 <script src="https://s3.tradingview.com/tv.js"></script>
 
@@ -18,30 +20,33 @@ display:flex;
 height:100vh;
 }
 
-/* LEFT SIDEBAR */
+/* LEFT WATCHLIST */
 
-.sidebar{
+.watchlist{
 width:200px;
 background:#111827;
 padding:10px;
+overflow:auto;
 }
 
-.sidebar button{
-width:100%;
-padding:10px;
-margin:5px 0;
-background:#00ffcc;
-border:none;
+.watchlist h3{
+color:#00ffcc;
+}
+
+.watchlist li{
 cursor:pointer;
+margin:10px 0;
 }
 
-/* MAIN AREA */
+/* CENTER */
 
-.main{
+.center{
 flex:1;
 display:flex;
 flex-direction:column;
 }
+
+/* TOP BAR */
 
 .topbar{
 background:#111827;
@@ -51,97 +56,101 @@ color:#00ffcc;
 font-size:20px;
 }
 
-/* PANELS */
+/* CHART */
+
+#chart{
+flex:1;
+}
+
+/* BOTTOM PANEL */
+
+.bottom{
+background:#111827;
+padding:10px;
+display:flex;
+gap:20px;
+}
+
+/* CALCULATOR */
+
+.calc input{
+padding:8px;
+margin:5px;
+}
+
+button{
+padding:8px;
+background:#00ffcc;
+border:none;
+cursor:pointer;
+}
+
+/* RIGHT MENU */
+
+.menu{
+width:200px;
+background:#111827;
+padding:10px;
+}
+
+.menu button{
+width:100%;
+margin:5px 0;
+}
 
 .panel{
-flex:1;
 display:none;
-padding:20px;
 }
 
 .active{
 display:block;
 }
 
-/* CHART */
-
-#chart{
-height:500px;
-}
-
-/* CALCULATOR */
-
-input{
-padding:10px;
-margin:5px;
-}
-
-/* ADMIN */
-
-.userbox{
-background:#111827;
-padding:10px;
-margin:5px 0;
-}
-
 </style>
+
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
-
-<div class="sidebar">
-
-<button onclick="showPanel('watchlist')">Watchlist</button>
-
-<button onclick="showPanel('chartPanel')">Chart</button>
-
-<button onclick="showPanel('calc')">Calculator</button>
-
-<button onclick="showPanel('menu')">Menu</button>
-
-</div>
-
-<!-- MAIN -->
-
-<div class="main">
-
-<div class="topbar">
-🔥 Phoenix AI Trading Terminal
-</div>
-
 <!-- WATCHLIST -->
 
-<div id="watchlist" class="panel active">
+<div class="watchlist">
 
 <h3>Watchlist</h3>
 
 <ul>
+
 <li onclick="loadChart('NSE:NIFTY1!')">NIFTY</li>
 <li onclick="loadChart('NSE:BANKNIFTY1!')">BANKNIFTY</li>
 <li onclick="loadChart('NSE:FINNIFTY1!')">FINNIFTY</li>
 <li onclick="loadChart('BSE:SENSEX')">SENSEX</li>
+
 </ul>
 
 </div>
 
-<!-- CHART -->
+<!-- CENTER AREA -->
 
-<div id="chartPanel" class="panel">
+<div class="center">
 
-<div id="chart"></div>
+<div class="topbar">
+
+🔥 Phoenix AI Trading Terminal
 
 </div>
 
-<!-- CALCULATOR -->
+<div id="chart"></div>
 
-<div id="calc" class="panel">
+<div class="bottom">
+
+<div class="calc">
 
 <h3>Option Calculator</h3>
 
-<input id="buy" placeholder="Buy Price">
-<input id="sell" placeholder="Sell Price">
+<input id="buy" placeholder="Buy">
+
+<input id="sell" placeholder="Sell">
+
 <input id="lot" placeholder="Lot Size">
 
 <button onclick="profit()">Calculate</button>
@@ -150,55 +159,73 @@ margin:5px 0;
 
 </div>
 
+</div>
+
+</div>
+
 <!-- MENU -->
 
-<div id="menu" class="panel">
+<div class="menu">
 
 <h3>Menu</h3>
 
-<button onclick="profile()">Profile</button>
+<button onclick="showPanel('profile')">Profile</button>
 
-<button onclick="language()">Language</button>
+<button onclick="showPanel('language')">Language</button>
 
-<button onclick="admin()">Admin Dashboard</button>
+<button onclick="showPanel('admin')">Admin</button>
 
 </div>
 
-<!-- ADMIN DASHBOARD -->
+<!-- PROFILE PANEL -->
 
-<div id="adminPanel" class="panel">
+<div id="profile" class="panel">
+
+<h3>Edit Profile</h3>
+
+<input placeholder="Name">
+
+<input placeholder="Email">
+
+<button>Save</button>
+
+</div>
+
+<!-- LANGUAGE PANEL -->
+
+<div id="language" class="panel">
+
+<h3>Language</h3>
+
+<button>English</button>
+
+<button>Hindi</button>
+
+</div>
+
+<!-- ADMIN PANEL -->
+
+<div id="admin" class="panel">
 
 <h3>Admin Dashboard</h3>
 
-<p>Total Users: <span id="userCount">3</span></p>
+<p>Total Users: <span id="users">3</span></p>
 
-<div class="userbox">aman@gmail.com</div>
-<div class="userbox">trader@gmail.com</div>
-<div class="userbox">admin@gmail.com</div>
+<ul>
 
-</div>
+<li>aman@gmail.com</li>
+<li>trader@gmail.com</li>
+<li>member@gmail.com</li>
+
+</ul>
 
 </div>
 
 <script>
 
-/* PANEL SWITCH */
-
-function showPanel(id){
-
-let panels=document.querySelectorAll(".panel");
-
-panels.forEach(p=>p.classList.remove("active"));
-
-document.getElementById(id).classList.add("active");
-
-}
-
-/* LOAD CHART */
+/* CHART */
 
 function loadChart(symbol){
-
-showPanel("chartPanel");
 
 document.getElementById("chart").innerHTML="";
 
@@ -208,12 +235,16 @@ symbol:symbol,
 interval:"5",
 container_id:"chart",
 width:"100%",
-height:500,
+height:"100%",
 theme:"dark"
 
 });
 
 }
+
+/* DEFAULT CHART */
+
+loadChart("NSE:NIFTY1!");
 
 /* CALCULATOR */
 
@@ -231,27 +262,20 @@ document.getElementById("result").innerHTML="Profit ₹ "+result;
 
 }
 
-/* MENU */
+/* MENU PANELS */
 
-function profile(){
+function showPanel(id){
 
-alert("Profile editing feature coming soon");
+let panels=document.querySelectorAll(".panel");
 
-}
+panels.forEach(p=>p.classList.remove("active"));
 
-function language(){
-
-alert("Language option coming soon");
-
-}
-
-function admin(){
-
-showPanel("adminPanel");
+document.getElementById(id).classList.add("active");
 
 }
 
 </script>
 
 </body>
+
 </html>
