@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phoenix AI Terminal</title>
 
-<title>Phoenix AI Ultra Terminal</title>
+<script src="https://s3.tradingview.com/tv.js"></script>
 
 <style>
 
@@ -13,70 +14,74 @@ margin:0;
 font-family:Arial;
 background:#0b0f19;
 color:white;
-}
-
-/* NAVBAR */
-
-nav{
-background:#111827;
-padding:15px;
-text-align:center;
-font-size:22px;
-color:#00ffcc;
-font-weight:bold;
-}
-
-/* DASHBOARD */
-
-.dashboard{
 display:flex;
-flex-wrap:wrap;
-gap:20px;
+height:100vh;
+}
+
+/* LEFT SIDEBAR */
+
+.sidebar{
+width:200px;
+background:#111827;
+padding:10px;
+}
+
+.sidebar button{
+width:100%;
+padding:10px;
+margin:5px 0;
+background:#00ffcc;
+border:none;
+cursor:pointer;
+}
+
+/* MAIN AREA */
+
+.main{
+flex:1;
+display:flex;
+flex-direction:column;
+}
+
+.topbar{
+background:#111827;
+padding:10px;
+text-align:center;
+color:#00ffcc;
+font-size:20px;
+}
+
+/* PANELS */
+
+.panel{
+flex:1;
+display:none;
 padding:20px;
 }
 
-.box{
-background:#111827;
-padding:20px;
-border-radius:10px;
-border:1px solid #00ffcc;
-width:200px;
-text-align:center;
+.active{
+display:block;
 }
 
 /* CHART */
 
-.chart-box{
-margin:20px;
-background:#111827;
-padding:20px;
-border-radius:10px;
-border:1px solid #00ffcc;
-}
-
-/* SIGNAL */
-
-.signal{
-font-size:20px;
-color:#00ffcc;
+#chart{
+height:500px;
 }
 
 /* CALCULATOR */
-
-.calc{
-padding:20px;
-}
 
 input{
 padding:10px;
 margin:5px;
 }
 
-button{
+/* ADMIN */
+
+.userbox{
+background:#111827;
 padding:10px;
-background:#00ffcc;
-border:none;
-cursor:pointer;
+margin:5px 0;
 }
 
 </style>
@@ -84,68 +89,56 @@ cursor:pointer;
 
 <body>
 
-<nav>
-🔥 Phoenix AI Ultra Trading Terminal
-</nav>
+<!-- SIDEBAR -->
 
-<!-- MARKET DASHBOARD -->
+<div class="sidebar">
 
-<div class="dashboard">
+<button onclick="showPanel('watchlist')">Watchlist</button>
 
-<div class="box">
-<h3>NIFTY</h3>
-<p>Live via TradingView</p>
-</div>
+<button onclick="showPanel('chartPanel')">Chart</button>
 
-<div class="box">
-<h3>BANKNIFTY</h3>
-<p>Live via TradingView</p>
-</div>
+<button onclick="showPanel('calc')">Calculator</button>
 
-<div class="box">
-<h3>INDIA VIX</h3>
-<p>Volatility Monitor</p>
-</div>
+<button onclick="showPanel('menu')">Menu</button>
 
 </div>
 
-<!-- SYMBOL SELECT -->
+<!-- MAIN -->
 
-<div style="padding:20px">
+<div class="main">
 
-<select onchange="changeSymbol(this.value)">
+<div class="topbar">
+🔥 Phoenix AI Trading Terminal
+</div>
 
-<option value="NSE:NIFTY1!">NIFTY</option>
-<option value="NSE:BANKNIFTY1!">BANKNIFTY</option>
-<option value="NSE:FINNIFTY1!">FINNIFTY</option>
+<!-- WATCHLIST -->
 
-</select>
+<div id="watchlist" class="panel active">
+
+<h3>Watchlist</h3>
+
+<ul>
+<li onclick="loadChart('NSE:NIFTY1!')">NIFTY</li>
+<li onclick="loadChart('NSE:BANKNIFTY1!')">BANKNIFTY</li>
+<li onclick="loadChart('NSE:FINNIFTY1!')">FINNIFTY</li>
+<li onclick="loadChart('BSE:SENSEX')">SENSEX</li>
+</ul>
 
 </div>
 
 <!-- CHART -->
 
-<div class="chart-box">
+<div id="chartPanel" class="panel">
 
-<div id="tradingview_chart"></div>
-
-</div>
-
-<!-- AI SIGNAL -->
-
-<div class="chart-box">
-
-<h3>AI Trade Signal</h3>
-
-<p id="signal" class="signal">Analyzing Market...</p>
+<div id="chart"></div>
 
 </div>
 
-<!-- OPTION CALCULATOR -->
+<!-- CALCULATOR -->
 
-<div class="chart-box calc">
+<div id="calc" class="panel">
 
-<h3>Option Profit Calculator</h3>
+<h3>Option Calculator</h3>
 
 <input id="buy" placeholder="Buy Price">
 <input id="sell" placeholder="Sell Price">
@@ -157,42 +150,72 @@ cursor:pointer;
 
 </div>
 
-<script src="https://s3.tradingview.com/tv.js"></script>
+<!-- MENU -->
+
+<div id="menu" class="panel">
+
+<h3>Menu</h3>
+
+<button onclick="profile()">Profile</button>
+
+<button onclick="language()">Language</button>
+
+<button onclick="admin()">Admin Dashboard</button>
+
+</div>
+
+<!-- ADMIN DASHBOARD -->
+
+<div id="adminPanel" class="panel">
+
+<h3>Admin Dashboard</h3>
+
+<p>Total Users: <span id="userCount">3</span></p>
+
+<div class="userbox">aman@gmail.com</div>
+<div class="userbox">trader@gmail.com</div>
+<div class="userbox">admin@gmail.com</div>
+
+</div>
+
+</div>
 
 <script>
+
+/* PANEL SWITCH */
+
+function showPanel(id){
+
+let panels=document.querySelectorAll(".panel");
+
+panels.forEach(p=>p.classList.remove("active"));
+
+document.getElementById(id).classList.add("active");
+
+}
 
 /* LOAD CHART */
 
 function loadChart(symbol){
 
+showPanel("chartPanel");
+
+document.getElementById("chart").innerHTML="";
+
 new TradingView.widget({
 
-width:"100%",
-height:500,
 symbol:symbol,
 interval:"5",
-timezone:"Asia/Kolkata",
-theme:"dark",
-style:"1",
-container_id:"tradingview_chart"
+container_id:"chart",
+width:"100%",
+height:500,
+theme:"dark"
 
 });
 
 }
 
-loadChart("NSE:NIFTY1!");
-
-/* SYMBOL SWITCH */
-
-function changeSymbol(symbol){
-
-document.getElementById("tradingview_chart").innerHTML="";
-
-loadChart(symbol);
-
-}
-
-/* OPTION PROFIT */
+/* CALCULATOR */
 
 function profit(){
 
@@ -204,47 +227,31 @@ let lot=document.getElementById("lot").value;
 
 let result=(sell-buy)*lot;
 
-document.getElementById("result").innerHTML="Profit ₹"+result;
+document.getElementById("result").innerHTML="Profit ₹ "+result;
 
 }
 
-/* AI SIGNAL */
+/* MENU */
 
-function aiSignal(){
+function profile(){
 
-let r=Math.random();
-
-if(r>0.65){
-
-return "📈 BUY CALL";
+alert("Profile editing feature coming soon");
 
 }
 
-if(r<0.35){
+function language(){
 
-return "📉 BUY PUT";
-
-}
-
-return "⚠️ SIDEWAYS MARKET";
+alert("Language option coming soon");
 
 }
 
-setInterval(()=>{
+function admin(){
 
-document.getElementById("signal").innerHTML=aiSignal();
+showPanel("adminPanel");
 
-},6000);
-
-☰ Menu
- ├ Profile
- ├ Language
- ├ Admin Dashboard
- └ Logout
-
+}
 
 </script>
 
 </body>
 </html>
-
